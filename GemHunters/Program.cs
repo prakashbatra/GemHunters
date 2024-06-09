@@ -85,7 +85,7 @@ namespace GemHunters
 
         private void PlaceObstacles()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 8; i++)
             {
                 int x, y;
                 do
@@ -99,7 +99,7 @@ namespace GemHunters
 
         private void PlaceGems()
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 15; i++)
             {
                 int x, y;
                 do
@@ -205,7 +205,7 @@ namespace GemHunters
 
         private bool IsGameOver()
         {
-            return TotalTurns >= 10;
+            return TotalTurns >= 30;
         }
 
         private void AnnounceWinner()
