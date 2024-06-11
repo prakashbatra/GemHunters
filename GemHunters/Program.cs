@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 
 namespace GemHunters
 {
@@ -18,10 +19,12 @@ namespace GemHunters
     // Player class
     class Player
     {
+        //Properties of the Player class
         public string Name { get; set; }
         public Position Position { get; set; }
         public int GemCount { get; set; }
 
+        //Constructor 
         public Player(string name, Position position)
         {
             Name = name;
@@ -29,6 +32,7 @@ namespace GemHunters
             GemCount = 0;
         }
 
+        //Move the player as per input
         public void Move(char direction)
         {
             switch (direction)
@@ -44,8 +48,10 @@ namespace GemHunters
     // Cell class
     class Cell
     {
+        //Property to store the occupant
         public string Occupant { get; set; }
 
+        //Constructor
         public Cell(string occupant = "-")
         {
             Occupant = occupant;
@@ -55,10 +61,16 @@ namespace GemHunters
     // Board class
     class Board
     {
+        //Property to store game board grid
         public Cell[,] Grid { get; set; }
+
+        //Random object for the placements of gems and obstacles
         private static Random random = new Random();
+
+        //Game object
         private Game Game;
 
+        //Constructor - intialize the game board, place players, obstacles, and gems
         public Board(Game game)
         {
             this.Game = game;
@@ -71,21 +83,25 @@ namespace GemHunters
                 }
             }
 
+            //Placement of players - Player 1 starts in the top-left corner and Player 2 starts in the bottom-right corner
             PlacePlayer(new Player("P1", new Position(0, 0)));
             PlacePlayer(new Player("P2", new Position(5, 5)));
 
+            //Call methods to place obstacles and gems
             PlaceObstacles();
             PlaceGems();
         }
 
+        //Place a player on the board at initial position
         private void PlacePlayer(Player player)
         {
             Grid[player.Position.X, player.Position.Y].Occupant = player.Name;
         }
 
+        //Place 10 obstacles randomly on the game board
         private void PlaceObstacles()
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 10; i++)
             {
                 int x, y;
                 do
@@ -97,9 +113,10 @@ namespace GemHunters
             }
         }
 
+        //Place 20 gems randomly on the game board
         private void PlaceGems()
         {
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 20; i++)
             {
                 int x, y;
                 do
@@ -111,6 +128,7 @@ namespace GemHunters
             }
         }
 
+        //Clear the console after every player move and display current board
         public void Display()
         {
             Console.Clear();
@@ -126,6 +144,7 @@ namespace GemHunters
             }
         }
 
+        //Check if the move is valid in the bounds of grid and target cell is not obstacle
         public bool IsValidMove(Player player, char direction)
         {
             int newX = player.Position.X, newY = player.Position.Y;
@@ -139,6 +158,7 @@ namespace GemHunters
             return newX >= 0 && newX < 6 && newY >= 0 && newY < 6 && Grid[newX, newY].Occupant != "O";
         }
 
+        //Move the player in specific direction
         public void MovePlayer(Player player, char direction)
         {
             Grid[player.Position.X, player.Position.Y].Occupant = "-";
@@ -147,6 +167,7 @@ namespace GemHunters
             Grid[player.Position.X, player.Position.Y].Occupant = player.Name;
         }
 
+        //Check if the player moved to a gem and collect it
         private void CollectGem(Player player)
         {
             if (Grid[player.Position.X, player.Position.Y].Occupant == "G")
@@ -159,12 +180,20 @@ namespace GemHunters
     // Game class
     class Game
     {
+        //Property to store the game board
         private Board Board { get; set; }
+
+        //Properties to store 2 players
         private Player Player1 { get; set; }
         private Player Player2 { get; set; }
+
+        //Property to track the player turn
         private Player CurrentTurn { get; set; }
+
+        //Property to count the total turns in the game
         public int TotalTurns { get; set; }
 
+        //Constructor - Initialize the board, players and set the initial turn.
         public Game()
         {
             Board = new Board(this);
@@ -174,16 +203,25 @@ namespace GemHunters
             TotalTurns = 0;
         }
 
+        //Start the game and control the game loop
         public void Start()
         {
             while (!IsGameOver())
             {
+                //Display the current board
                 Board.Display();
+
+                //Print current player and their gems count
                 Console.WriteLine($"{CurrentTurn.Name}'s turn. Gems collected: {CurrentTurn.GemCount}");
+
+                //Prompt to move
                 Console.Write("Enter move (U/D/L/R): ");
+
+                //Read user input
                 char move = Console.ReadKey().KeyChar;
                 Console.WriteLine();
 
+                //Check the move is valid, move the current player 
                 if (Board.IsValidMove(CurrentTurn, move))
                 {
                     Board.MovePlayer(CurrentTurn, move);
@@ -195,19 +233,23 @@ namespace GemHunters
                     Console.WriteLine("Invalid move. Try again.");
                 }
             }
+            //After the game is over, announce the winner
             AnnounceWinner();
         }
 
+        //Switch the turn between players
         private void SwitchTurn()
         {
             CurrentTurn = (CurrentTurn == Player1) ? Player2 : Player1;
         }
 
+        //The game ends after 30 moves (15 turns for each player)
         private bool IsGameOver()
         {
             return TotalTurns >= 30;
         }
 
+        //Display winner at the end with Gems count for both the players
         private void AnnounceWinner()
         {
             Console.WriteLine("Game Over!");
@@ -230,17 +272,26 @@ namespace GemHunters
 
     class Program
     {
+        //Main method of the program
         static void Main(string[] args)
         {
             bool playAgain = false;
             do
             {
+                //Create new instance of Game class
                 Game game = new Game();
+
+                //Start the game
                 game.Start();
 
-                Console.WriteLine("Do you want to play again? [y/n] (y)");
-                string input = Console.ReadLine() ?? "y";
-                playAgain = (input == "y");
+                //Check with user if want to play again
+                Console.WriteLine("Do you want to play again? [Y/N] (Y)");
+
+                //Read the user input
+                string input = Console.ReadLine() ?? "Y";
+                playAgain = (input == "Y");
+
+                //Continue the loop if play again is true
             } while (playAgain);
 
         }
