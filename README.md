@@ -12,7 +12,7 @@ Gems: Randomly placed on the board at the start of the game. They do not move on
 Obstacles: Random positions on the board (e.g., represented by an "O") that players cannot pass through.
 
 **Rules:**
-- The board contains 10 randomly placed obstacles ('O') and 20 randomly placed gems ('G').
+- The board contains 6 randomly placed obstacles ('O') and 24 randomly placed gems ('G').
 - Players take turns to move in one of four directions: Up (U), Down (D), Left (L), Right (R).
 - Players cannot move diagonally.
 - Players cannot move onto or through squares with obstacles.
