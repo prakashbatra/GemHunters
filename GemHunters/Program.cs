@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Xml.Linq;
 
 namespace GemHunters
 {
     // Position class
     class Position
     {
+        //Properties of the Position class
         public int X { get; set; }
         public int Y { get; set; }
 
+        //Constructor
         public Position(int x, int y)
         {
             X = x;
@@ -101,7 +102,7 @@ namespace GemHunters
         //Place 10 obstacles randomly on the game board
         private void PlaceObstacles()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 6; i++)
             {
                 int x, y;
                 do
@@ -116,7 +117,7 @@ namespace GemHunters
         //Place 20 gems randomly on the game board
         private void PlaceGems()
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 24; i++)
             {
                 int x, y;
                 do
